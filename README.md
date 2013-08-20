@@ -1,4 +1,3 @@
-wikizabytki-map
-===============
+### Map for 'Wiki Loves Monuments' in Poland
 
-Map for 'Wiki Loves Monuments' in Poland
+![Mapa](http://funkyimg.com/i/CeSV.png)
