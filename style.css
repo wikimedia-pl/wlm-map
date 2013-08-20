@@ -1,0 +1,154 @@
+body {
+	background: #fefefe url(img/bg.png);
+	padding: 0;
+	margin: 0;
+	color: #777;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+	font-size: 21px;
+}
+
+a {
+	text-decoration: none;
+}
+
+img {
+	border: 0;
+}
+
+a, a:hover {
+	color: #8F0000;
+}
+
+/* TOP */
+#top {
+	margin: 7px 15px;
+}
+
+#top .fb {
+	float: right;
+}
+
+#top .fb iframe {
+	border:none;
+	overflow:hidden;
+	padding-top: 10px;
+	width:350px;
+	height:35px;"
+}
+
+#top .logo {
+	width: 60px;
+	float:left;
+	padding-right: 10px;
+}
+
+#top header {
+	font-size: 30px;
+	font-weight: 300;
+	line-height: 1;
+	letter-spacing: -1px;
+	color: #999999;
+	text-transform: lowercase;
+}
+
+/* MAP */
+#map {
+	position: absolute;
+	bottom: 30px;
+	top: 70px;
+	left: 0px;
+	right: 0px;
+}
+
+/* BOTTOM */
+#bottom {
+	position: absolute;
+	right: 0px;
+	left: 0px;
+	bottom: 0px;
+	height: 25px;
+	padding: 2px;
+	font-size: 16px;
+}
+
+#bottom .wikimedia {
+	float:left;
+}
+
+#bottom .osm {
+	float:right;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+/* LOADING... */
+#loading {
+	display: none;
+	z-index: 10;
+	position: absolute;
+	top: 82px;
+	left: 50px;
+	height: 30px;
+	background-color: #fefefe;
+	box-shadow: 0 0 8px rgba(0,0,0,0.3);
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 1px 5px;
+}
+
+#loading span {
+	line-height: 30px;
+	font-size: 15px;
+}
+
+#loading img {
+	float: left;
+	margin: 2px 5px 0 0;
+}
+
+
+/* LEAFLET FIXES */
+
+.leaflet-control-zoom a {
+	width: 30px;
+	height: 30px;
+	color: #777;
+	line-height: 30px;
+	font-weight: 300;
+	font-size: 21px;
+}
+
+.leaflet-bar {
+	box-shadow: 0;
+	border: 0;
+}
+
+.leaflet-bar-part {
+	background-color: #fefefe;
+	border-bottom: 1px solid #eee;
+}
+
+.leaflet-popup-content {
+	text-align: center;
+}
+
+.leaflet-popup-content strong {
+	display: block;
+	margin-bottom: 5px;
+}
+.leaflet-popup-content button {
+	display: block;
+	width: 100%;
+	background: #eee;
+	border: 0;
+	margin-top: 10px;
+	padding: 5px;
+	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+.leaflet-popup-content button:hover {
+	background: #ddd;
+	cursor: pointer;
+}
