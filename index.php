@@ -11,10 +11,11 @@
         <!--[if lte IE 8]><link rel="stylesheet" href="js/leaflet.markercluster.def.ie.css" /><![endif]-->
         <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
         <script src="js/leaflet.markercluster.js"></script>
-		<script src="js/leaflet.hash.js"></script>
+	<script src="js/leaflet.hash.js"></script>
         <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,700&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
         <script src="js/script.js"></script>
-		<link rel="stylesheet" href="style.css" />
+        <script src="js/wiki.js"></script>
+	<link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div id="loading"><img src="img/loading.gif" /><span>Wczytywanie danych...</span></div>

@@ -57,11 +57,13 @@ $(document).ready(function() {
         map.query();
     });
     new L.Hash(map);
-	L.control.layers({
-		"Mapa" : cloudmade,
-		"Osmapa" : osmapa
-	}, {}).addTo(map);
-	map.attributionControl.setPrefix('');
+    L.control.layers({
+            "Mapa" : cloudmade,
+            "Osmapa" : osmapa
+    }, {}).addTo(map);
+    map.attributionControl.setPrefix('');
+    map.locate({setView: true, maxZoom: 16});
+    
     /*
      * map functions
      */
@@ -188,13 +190,13 @@ function parse(data){
         if(monument.elements[e.id] === undefined) {
             var coord = new L.LatLng(e.lat, e.lon);
             monument.elements[e.id] = new monument.obj(coord, e.name, e.address);
-			
-            var text = "<h3>"+e.name+"</h3>"+e.address+"<a href='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&width=100' />";
-            var text_nofoto = "<h3>"+e.name+"</h3>"+e.address;
+	
+            var text = "<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+e.address+"<a href='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&width=100' />";
+            var text_nofoto = "<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+e.address;
 
             if(e.image !== "") {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon})
-                    .bindPopup("<h3>"+e.name+"</h3><h4>"+e.address+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a>", {minWidth: 200})
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a>", {minWidth: 200})
                     .on('click', function(e) {
                         $("#thumbnail")
                             .one('load', function() {
