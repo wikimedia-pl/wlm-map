@@ -37,10 +37,10 @@ $(document).ready(function() {
         maxZoom: 18,
         opacity: 1
     });
-	
+
     map = L.map('map', {
-        center: [51.937, 18.951],
-        zoom: 6,
+        center: [39.893, -99.536],
+        zoom: 5,
         layers: [cloudmade, monument.layer],
         minZoom: 3
     });
