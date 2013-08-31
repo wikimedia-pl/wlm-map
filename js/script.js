@@ -4,7 +4,7 @@ monument.array = new Array();
 monument.elements = {};
 monument.layer = new L.MarkerClusterGroup({
     showCoverageOnHover: false,
-    maxClusterRadius: 120,
+    maxClusterRadius: 90,
 	/*removeOutsideVisibleBounds: true*/
 }); //layer for elements
 
@@ -62,8 +62,8 @@ $(document).ready(function() {
             "Osmapa" : osmapa
     }, {}).addTo(map);
     map.attributionControl.setPrefix('');
-    map.locate({setView: true, maxZoom: 16});
-    
+    /*map.locate({setView: true, maxZoom: 16});*/
+
     /*
      * map functions
      */
@@ -86,11 +86,13 @@ $(document).ready(function() {
     };
     
     map.query = function() {
-        if(map.getZoom() > 9 && params.page === undefined)
+        if(map.getZoom() < 10 && params.page === undefined)
+            $('#zoom-in-info').fadeIn();
+        if(map.getZoom() > 9 && params.page === undefined) 
             actions.bbox(map.getBounds().toBBoxString());
         if(params.page !== undefined)
             actions.webscrap('http://pl.wikipedia.org/wiki/'+decodeURIComponent(params.page));
-    }
+    };
     
     map.query();
 });
@@ -172,10 +174,13 @@ actions.source = function(url) {
 };
 
 actions.bbox = function(bbox){
+    $('#zoom-in-info').fadeOut();
     $('#loading').fadeIn();
+    
     var link = "http://toolserver.org/~erfgoed/api/api.php?action=search&bbox="+bbox+"&format=json&limit=100&callback=parse";
 	//http://toolserver.org/~erfgoed/api/api.php?action=search&bbox=19.27345275878906,52.649729197309426,19.79084014892578,52.78469999350529&format=json&limit=100&callback=parse
-	//console.log(link);
+	//alert(link);
+        //https://tools.wmflabs.org/heritage/api/api.php
 	
     var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -190,13 +195,16 @@ function parse(data){
         if(monument.elements[e.id] === undefined) {
             var coord = new L.LatLng(e.lat, e.lon);
             monument.elements[e.id] = new monument.obj(coord, e.name, e.address);
-	
-            var text = "<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+e.address+"<a href='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&width=100' />";
-            var text_nofoto = "<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+e.address;
+
+            var uploadlink = "//commons.wikimedia.org/w/index.php?title=Special:UploadWizard&campaign=wlm-"+e.country+
+                    "&id="+e.id+
+                    "&descriptionlang="+e.lang+
+                    "&description="+encodeURI(txtwiki.parseWikitext(e.name))+", "+encodeURI(txtwiki.parseWikitext(e.address))+
+                    "&categories="/*+encodeURI("WLM 2013 United States unreviewed")*/;
 
             if(e.image !== "") {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a>", {minWidth: 200})
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>", {minWidth: 200})
                     .on('click', function(e) {
                         $("#thumbnail")
                             .one('load', function() {
@@ -213,7 +221,7 @@ function parse(data){
                 );
             } else {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon_nofoto})
-                    .bindPopup(text_nofoto)
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+txtwiki.parseWikitext(e.address)+"<a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>")
                 );
             }
         }
