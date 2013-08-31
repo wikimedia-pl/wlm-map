@@ -200,11 +200,11 @@ function parse(data){
                     "&id="+e.id+
                     "&descriptionlang="+e.lang+
                     "&description="+encodeURI(txtwiki.parseWikitext(e.name))+", "+encodeURI(txtwiki.parseWikitext(e.address))+
-                    "&categories="/*+encodeURI("WLM 2013 United States unreviewed")*/;
+                    "&categories="+encodeURI("WLM 2013 United States unreviewed");
 
             if(e.image !== "") {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>", {minWidth: 200})
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Upload</a>", {minWidth: 200})
                     .on('click', function(e) {
                         $("#thumbnail")
                             .one('load', function() {
@@ -221,7 +221,7 @@ function parse(data){
                 );
             } else {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon_nofoto})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+txtwiki.parseWikitext(e.address)+"<a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>")
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+txtwiki.parseWikitext(e.address)+"<a class='button-upload' href='"+uploadlink+"'/>Upload</a>")
                 );
             }
         }

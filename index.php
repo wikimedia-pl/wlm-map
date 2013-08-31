@@ -18,8 +18,8 @@
 	<link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div id="zoom-in-info" class="leaflet-bar">Przybliż mapę aby zobaczyć naniesione zabytki</div>
-        <div id="loading"><img src="img/loading.gif" /><span>Wczytywanie danych...</span></div>
+        <div id="zoom-in-info" class="leaflet-bar">Zoom in to see monuments</div>
+        <div id="loading"><img src="img/loading.gif" /><span>Loading data...</span></div>
 		<div id="top">
 			<div class="fb"><iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FWikiLubiZabytki&amp;width=450&amp;height=35&amp;colorscheme=light&amp;layout=standard&amp;action=like&amp;show_faces=false&amp;send=false" scrolling="no" frameborder="0" allowTransparency="true"></iframe></div>
 			<a href="http://wikizabytki.pl/mapa"><img class="logo" src="img/logo.png" /></a>
