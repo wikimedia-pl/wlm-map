@@ -177,7 +177,7 @@ actions.bbox = function(bbox){
     $('#zoom-in-info').fadeOut();
     $('#loading').fadeIn();
     
-    var link = "http://toolserver.org/~erfgoed/api/api.php?action=search&bbox="+bbox+"&format=json&limit=100&callback=parse";
+    var link = "http://toolserver.org/~erfgoed/api/api.php?action=search&bbox="+bbox+"&format=json&limit=300&callback=parse";
 	//http://toolserver.org/~erfgoed/api/api.php?action=search&bbox=19.27345275878906,52.649729197309426,19.79084014892578,52.78469999350529&format=json&limit=100&callback=parse
 	//alert(link);
         //https://tools.wmflabs.org/heritage/api/api.php
