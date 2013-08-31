@@ -1,3 +1,7 @@
+@import url('js/leaflet.css');
+@import url('js/leaflet.markercluster.css');
+@import url('js/leaflet.markercluster.def.css');
+
 body {
 	background: #fefefe url(img/bg.png);
 	padding: 0;

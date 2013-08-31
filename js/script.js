@@ -49,7 +49,7 @@ $(document).ready(function() {
         zoom: 6,
         layers: [cloudmade, monument.layer],
         minZoom: 3
-    });
+    });   
     map.on('dragend', function(e) {
         map.query();
     });
@@ -177,7 +177,7 @@ actions.bbox = function(bbox){
     $('#zoom-in-info').fadeOut();
     $('#loading').fadeIn();
     
-    var link = "http://toolserver.org/~erfgoed/api/api.php?action=search&bbox="+bbox+"&format=json&limit=100&callback=parse";
+    var link = "http://toolserver.org/~erfgoed/api/api.php?srcountry=pl&action=search&bbox="+bbox+"&format=json&limit=100&callback=parse";
 	//http://toolserver.org/~erfgoed/api/api.php?action=search&bbox=19.27345275878906,52.649729197309426,19.79084014892578,52.78469999350529&format=json&limit=100&callback=parse
 	//alert(link);
         //https://tools.wmflabs.org/heritage/api/api.php
@@ -196,15 +196,23 @@ function parse(data){
             var coord = new L.LatLng(e.lat, e.lon);
             monument.elements[e.id] = new monument.obj(coord, e.name, e.address);
 
+            var addr = e.adm4;
+            if(e.address !== "") addr += ", " + e.address;
+            
+            //upload link
             var uploadlink = "//commons.wikimedia.org/w/index.php?title=Special:UploadWizard&campaign=wlm-"+e.country+
                     "&id="+e.id+
                     "&descriptionlang="+e.lang+
-                    "&description="+encodeURI(txtwiki.parseWikitext(e.name))+", "+encodeURI(txtwiki.parseWikitext(e.address))+
-                    "&categories="/*+encodeURI("WLM 2013 United States unreviewed")*/;
+                    "&description="+encodeURI(txtwiki.parseWikitext(e.adm4));
+            
+            if(e.name !== "")
+                uploadlink += ", " + encodeURI(txtwiki.parseWikitext(e.name));
+            uploadlink += "&categories="+encodeURI("Cultural heritage monuments in " + txtwiki.parseWikitext(e.adm3));
 
+            //add to map
             if(e.image !== "") {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>", {minWidth: 200})
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(addr)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>", {minWidth: 200})
                     .on('click', function(e) {
                         $("#thumbnail")
                             .one('load', function() {
@@ -221,7 +229,7 @@ function parse(data){
                 );
             } else {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon_nofoto})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+txtwiki.parseWikitext(e.address)+"<a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>")
+                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(addr)+"</h4><a class='button-upload' href='"+uploadlink+"'/>Prześlij zdjęcie</a>")
                 );
             }
         }
