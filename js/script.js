@@ -32,12 +32,6 @@ monument.icon_nofoto = L.icon({
 var map;
 
 $(document).ready(function() {
-    var osmapa = L.tileLayer('//{s}.osm.trail.pl/osmapa.pl/{z}/{x}/{y}.png', {
-        attribution: '',
-        maxZoom: 18,
-        opacity: 0.8
-    });
-	
     var cloudmade = L.tileLayer('http://129.206.74.245:8001/tms_r.ashx?x={x}&y={y}&z={z} ', {
         attribution: '',
         maxZoom: 18,
@@ -58,8 +52,7 @@ $(document).ready(function() {
     });
     new L.Hash(map);
     L.control.layers({
-            "Mapa" : cloudmade,
-            "Osmapa" : osmapa
+            "Map" : cloudmade,
     }, {}).addTo(map);
     map.attributionControl.setPrefix('');
     /*map.locate({setView: true, maxZoom: 16});*/
@@ -177,7 +170,7 @@ actions.bbox = function(bbox){
     $('#zoom-in-info').fadeOut();
     $('#loading').fadeIn();
     
-    var link = "http://toolserver.org/~erfgoed/api/api.php?action=search&bbox="+bbox+"&format=json&limit=300&callback=parse";
+    var link = "https://tools.wmflabs.org/heritage/api/api.php?action=search&bbox="+bbox+"&format=json&srcountry=us&limit=100&callback=parse";
 	//http://toolserver.org/~erfgoed/api/api.php?action=search&bbox=19.27345275878906,52.649729197309426,19.79084014892578,52.78469999350529&format=json&limit=100&callback=parse
 	//alert(link);
         //https://tools.wmflabs.org/heritage/api/api.php
@@ -200,11 +193,17 @@ function parse(data){
                     "&id="+e.id+
                     "&descriptionlang="+e.lang+
                     "&description="+encodeURI(txtwiki.parseWikitext(e.name))+", "+encodeURI(txtwiki.parseWikitext(e.address))+
-                    "&categories="+encodeURI("WLM 2013 United States unreviewed");
+                    "&categories="+encodeURI("WLM 2013 United States unreviewed")+
+                    "&lat="+e.lat+"&lon="+e.lon;
+
+            var popupheader = "";
+            if(e.monument_article !== "") popupheader += "<a href='http://en.wikipedia.org/wiki/" + encodeURI(txtwiki.parseWikitext(e.monument_article)) + "' target='_blank' />"
+                popupheader += txtwiki.parseWikitext(e.name);
+            if(e.monument_article !== "") popupheader += "</a>"
 
             if(e.image !== "") {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Upload</a>", {minWidth: 200})
+                    .bindPopup("<h3>"+popupheader+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"<br />"+txtwiki.parseWikitext(e.municipality)+"</h4><a href='http://commons.wikimedia.org/wiki/File:"+e.image+"' target='_blank'><img class='thumbnail-loader' src='img/loading.gif' /><img id='thumbnail' src='http://commons.wikimedia.org/w/thumb.php?f="+encodeURI(e.image)+"&w=200' /></a><a class='button-upload' href='"+uploadlink+"'/>Upload</a>", {minWidth: 200})
                     .on('click', function(e) {
                         $("#thumbnail")
                             .one('load', function() {
@@ -221,7 +220,7 @@ function parse(data){
                 );
             } else {
                 monument.layer.addLayer(L.marker(coord, {icon: monument.icon_nofoto})
-                    .bindPopup("<h3>"+txtwiki.parseWikitext(e.name)+"</h3>"+txtwiki.parseWikitext(e.address)+"<a class='button-upload' href='"+uploadlink+"'/>Upload</a>")
+                    .bindPopup("<h3>"+popupheader+"</h3><h4>"+txtwiki.parseWikitext(e.address)+"<br />"+txtwiki.parseWikitext(e.municipality)+"</h4><a class='button-upload' href='"+uploadlink+"'/>Upload</a>")
                 );
             }
         }
